@@ -6,16 +6,17 @@ import {
     } from '@react-oauth/google'
 
 //import { ReportHome } from './report'
-
+import { createGoogleSheet } from './google-download'
+/*
 interface SignInState {
     log: 'New' | 'Form' | 'Signed'
     account: AxiosResponse //add axios types
-}
+}*/
 
 interface SignInProps {
     //success: (response: GoogleLoginResponse | GoogleLoginResponseOffline) => void
     //failure: (response: GoogleLoginResponse | GoogleLoginResponseOffline) => void
-    setState: (state: SignInState) => void
+    setState: (state: any) => void
 }
 
 export function SignInWrapper() {
@@ -33,6 +34,8 @@ export function SignInWrapper() {
 }
 
 export function LoginPage(props: SignInProps) {
+
+
     const googleLogin = useGoogleLogin({
         onSuccess: async (tokenResponse) => {
             //console.log(tokenResponse);
@@ -58,6 +61,12 @@ export function LoginPage(props: SignInProps) {
                 googleLogin()
                 }}>
                 Login with Your CPS Email
+            </button>
+            <button onClick={e => {
+                e.preventDefault()
+                createGoogleSheet()
+                }}>
+                I mean maybe this works
             </button>
             
         </>

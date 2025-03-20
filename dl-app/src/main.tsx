@@ -5,6 +5,8 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import { SignInWrapper } from './signin.tsx';
 import './index.css'
 import App from './App.tsx'
+//import 'dotenv/config.js'
+
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

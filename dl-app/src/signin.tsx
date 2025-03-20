@@ -6,7 +6,7 @@ import {
     } from '@react-oauth/google'
 
 //import { ReportHome } from './report'
-import { createGoogleSheet } from './google-download'
+import {GoogleDownload} from './gapi'
 /*
 interface SignInState {
     log: 'New' | 'Form' | 'Signed'
@@ -16,7 +16,7 @@ interface SignInState {
 interface SignInProps {
     //success: (response: GoogleLoginResponse | GoogleLoginResponseOffline) => void
     //failure: (response: GoogleLoginResponse | GoogleLoginResponseOffline) => void
-    setState: (state: any) => void
+    setState: (state: any) => void  // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
 export function SignInWrapper() {
@@ -62,12 +62,7 @@ export function LoginPage(props: SignInProps) {
                 }}>
                 Login with Your CPS Email
             </button>
-            <button onClick={e => {
-                e.preventDefault()
-                createGoogleSheet()
-                }}>
-                I mean maybe this works
-            </button>
+            <GoogleDownload/>
             
         </>
     )

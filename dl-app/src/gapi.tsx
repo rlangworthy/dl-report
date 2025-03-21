@@ -1,42 +1,35 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
+import {useDropzone} from 'react-dropzone'
+import Papa from 'papaparse'
 
 
-export function oauthSignIn() {
-  // Google's OAuth 2.0 endpoint for requesting an access token
-  const oauth2Endpoint = 'https://accounts.google.com/o/oauth2/v2/auth';
+//FIXME Add state for our files
+function MyDropzone() {
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    acceptedFiles.forEach((file) => {
+      const reader = new FileReader()
 
-  // Create <form> element to submit parameters to OAuth 2.0 endpoint.
-  const form = document.createElement('form');
-  form.setAttribute('method', 'GET'); // Send as a GET request.
-  form.setAttribute('action', oauth2Endpoint);
+      reader.onabort = () => console.log('file reading was aborted')
+      reader.onerror = () => console.log('file reading has failed')
+      reader.onload = () => {
+      // Do whatever you want with the file contents
+        const binaryStr = reader.result
+        console.log(binaryStr)
+      }
+      reader.readAsArrayBuffer(file)
 
-  // Parameters to pass to OAuth 2.0 endpoint.
-  const params: {[key: string]: string} = {'client_id': import.meta.env.VITE_CLIENT_ID,
-                'redirect_uri': import.meta.env.VITE_REDIRECT_URI,
-                'response_type': 'token',
-                'scope': 'https://www.googleapis.com/auth/drive.file',
-                'include_granted_scopes': 'true',
-                'state': 'pass-through value'};
+    })
+    
+  }, [])
+  const {getRootProps, getInputProps} = useDropzone({onDrop})
 
-  // Add form parameters as hidden input values.
-  for (const p in params) {
-    const input = document.createElement('input');
-    input.setAttribute('type', 'hidden');
-    input.setAttribute('name', p);
-    input.setAttribute('value', params[p]);
-    form.appendChild(input);
-  }
-
-  // Add form to page and submit it to open the OAuth 2.0 endpoint.
-  //FIXME make this actually open a new page? maybe it'll be fine once the rest of this logic is sorted out
-  const newWindow = window.open("about:blank", "_blank");
-  if (newWindow !== null){
-    newWindow.document.body.appendChild(form)
-  }
-
-  form.submit();
+  return (
+    <div {...getRootProps()}>
+      <input {...getInputProps()} />
+      <p>Drag 'n' drop some files here, or click to select files</p>
+    </div>
+  )
 }
-
 
 export function GoogleDownload() {
 
@@ -115,6 +108,8 @@ export function GoogleDownload() {
           <button id="signout_button"  onClick={handleSignoutClick} className="block googlesignout">Sign Out of Google</button>
 
           <button id="download_button" onClick={() => console.log('yay')} className="block google">Download Data to Google Sheets</button> 
+
+          <MyDropzone/>
 
       </div>
   )

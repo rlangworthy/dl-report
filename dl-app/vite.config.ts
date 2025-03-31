@@ -18,4 +18,5 @@ export default defineConfig({
   server: {
     port: 3000,
   },
+  base: "https://co-ps-chavez-sites-w01.cps.k12.il.us/dl-scheduling"
 })

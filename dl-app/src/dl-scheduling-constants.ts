@@ -1,52 +1,165 @@
+
 //FIXME replace these names with javascript styled names
 
-export const display_info = ['Student ID', 'Name','Current Homeroom', 'Grade','ELL Program Year Code','LRE','ARS','PDIS']
+export const display_info = [
+    'Student ID', 
+    'Name',
+    'Current Homeroom', 
+    'Grade',
+    'ELL Program Year Code',
+    'LRE',
+    'ARS',
+    'PDIS'
+]
 export const info_columns = [
-    'Current Homeroom', 'Name','Birthdate','Gender','Grade','ELL','ELL Program Year Code',
-    'LRE','ARS','PDIS','Cluster Program'
+    'Current Homeroom', 
+    'Name',
+    'Birthdate',
+    'Gender',
+    'Grade',
+    'ELL',
+    'ELL Program Year Code',
+    'LRE',
+    'ARS',
+    'PDIS',
+    'Cluster Program'
     ]
 
-    export const drop_columns = [
-    'School', 'Network','School Code','Para','Access Test RPL','Access Test WPL','Access Test LPL',
-    'Access Test SPL','Access Test LitPL','Access Test ComprehensionPL','Access Com', 'Medical Condition'
+export const drop_columns = [
+    'School',
+    'Network',
+    'School Code',
+    'Para',
+    'Access Test RPL',
+    'Access Test WPL',
+    'Access Test LPL',
+    'Access Test SPL',
+    'Access Test LitPL',
+    'Access Test ComprehensionPL',
+    'Access Com',
+     'Medical Condition'
     ]
-
-    export const teacher_core = [
-    'ELA Gen Ed', 'Math Gen Ed', 'Science Gen Ed',
-    'Social Sciences Gen Ed', 'ELA Sep', 'Math Sep', 'Science Sep',
+export const teacherCoreGenEd = [
+    'ELA Gen Ed',
+    'Math Gen Ed',
+    'Science Gen Ed',
+    'Social Sciences Gen Ed',
+]
+export const teacherCoreSep = [
+    'ELA Sep', 
+    'Math Sep', 
+    'Science Sep',
     'Social Sciences Sep'
-    ]
-
-    export const teacher_specials = [
-    'Art Gen Ed', 'Computers Gen Ed', 'Health Ed Gen Ed', 'Library Gen Ed',
-     'Music Gen Ed', 'Physical Ed Gen Ed', 'Vocational Gen Ed',
-     'World Language Gen Ed', 'Art Sep', 'Computers Sep', 'Health Ed Sep',
-     'Library Sep', 'Music Sep', 'Physical Ed Sep', 'Vocational Sep',
-     'World Language Sep'
-    ]
-
-    export const teacher_rls = [
-    'Speech Gen Ed','SW Gen Ed','OT Gen Ed','PT Gen Ed','Nurse Gen Ed','Psych Gen Ed',
-    'Speech Sep','SW Sep',  'OT Sep','PT Sep',  'Nurse Sep', 'Psych Sep'
-    ]
-
-    export const teacher_rls_totals = [
-'Speech indirect min/wk',
-'SW indirect min/wk', 'OT indirect min/wk', 'PT indirect min/wk',
-'Nurse indirect min/wk', 'Psych indirect min/wk'
 ]
 
-export const teacher_additional = [
-'Independent Function Gen Ed', 'Social Emotional Gen Ed', 'Other1 Gen Ed',
-'Other2 Gen Ed', 'Other3 Gen Ed', 'Independent Function Sep',
-'Social Emotional Sep', 'Other1 Sep', 'Other2 Sep', 'Other3 Sep'
+export const teacher_core = teacherCoreGenEd.concat(teacherCoreSep)
+
+export const teacherSpecialsGenEd = [
+    'Art Gen Ed', 
+    'Computers Gen Ed', 
+    'Health Ed Gen Ed', 
+    'Library Gen Ed',
+    'Music Gen Ed', 
+    'Physical Ed Gen Ed', 
+    'Vocational Gen Ed',
+    'World Language Gen Ed', 
+]
+
+export const teacherSpecialsSep = [
+    'Art Sep', 
+    'Computers Sep', 
+    'Health Ed Sep',
+    'Library Sep', 
+    'Music Sep', 
+    'Physical Ed Sep', 
+    'Vocational Sep',
+    'World Language Sep'
+]
+
+export const teacher_specials = teacherSpecialsGenEd.concat(teacherSpecialsSep)
+
+export const teacher_rls = [
+    'Speech Gen Ed',
+    'SW Gen Ed',
+    'OT Gen Ed',
+    'PT Gen Ed',
+    'Nurse Gen Ed',
+    'Psych Gen Ed',
+    'Speech Sep',
+    'SW Sep',
+    'OT Sep',
+    'PT Sep',
+    'Nurse Sep',
+    'Psych Sep'
     ]
 
-    export const aide_specials = [
-    'Art GE Dedicated', 'Computers Gen Ed Dedicated',
-     'Physical Ed Gen Ed Dedicated', 'Health Ed Gen Ed Dedicated',
-     'Library Gen Ed Dedicated', 'Music Gen Ed Dedicated',
-     'Vocational Gen Ed Dedicated', 'World Language Gen Ed Dedicated',
+export const teacher_rls_totals = [
+    'Speech indirect min/wk',
+    'SW indirect min/wk', 
+    'OT indirect min/wk', 
+    'PT indirect min/wk',
+    'Nurse indirect min/wk', 
+    'Psych indirect min/wk'
+    ]
+
+export const teacher_additional = [
+    'Independent Function Gen Ed',
+    'Social Emotional Gen Ed', 
+    'Other1 Gen Ed',
+    'Other2 Gen Ed', 
+    'Other3 Gen Ed', 
+    'Independent Function Sep',
+    'Social Emotional Sep', 
+    'Other1 Sep', 
+    'Other2 Sep', 
+    'Other3 Sep'
+    ]
+
+export const aideCoreGenEd = [
+    'Math Gen Ed Dedicated', 
+    'ELA Gen Ed Dedicated', 
+    'Science Gen Ed Dedicated',
+    'Social Sciences Gen Ed Dedicated', 
+    'Math Gen Ed Shared',
+    'ELA Gen Ed Shared', 
+    'Science GE Shared', 
+    'Social Science Gen Ed Shared',
+]
+
+export const aideCoreSeperate = [
+    'Math Separated Dedicated',
+    'ELA Separated Dedicated', 
+    'Science Separated Dedicated',
+    'Social Sciences Separated Dedicated',
+    'Math Separated Shared', 
+    'ELA Separated Shared', 
+    'Science Separated Shared',
+    'Social Science Separated Shared',
+
+]
+
+export const aideCoreComm = [
+    'Math Comm Dedicated',
+    'ELA Comm Dedicated', 
+    'Science Comm Dedicated',
+    'Social Sciences Comm Dedicated', 
+    'Math Comm Shared', 
+    'ELA Comm Shared',
+    'Science Comm Shared', 
+    'Social Sciences Comm Shared',
+]
+
+export const aide_core = aideCoreGenEd.concat(aideCoreSeperate, aideCoreComm)
+
+export const aide_specials = [
+    'Art GE Dedicated', 
+    'Computers Gen Ed Dedicated',
+    'Physical Ed Gen Ed Dedicated', 
+    'Health Ed Gen Ed Dedicated',
+    'Library Gen Ed Dedicated', 
+     
+    'Music Gen Ed Dedicated',
+    'Vocational Gen Ed Dedicated', 'World Language Gen Ed Dedicated',
      'Art Separated Dedicated', 'Computers Separated Dedicated',
      'Physical Ed Separated Dedicated', 'Health Ed Separated Dedicated',
      'Library Separated Dedicated', 'Music Separated Dedicated',
@@ -66,19 +179,8 @@ export const teacher_additional = [
      'Health Ed Comm Shared', 'Library Comm Shared', 'Music Comm Shared',
      'Vocational Comm Shared', 'World Language Comm Shared'
     ]
-    export const aide_core = [
-    'Math Gen Ed Dedicated', 'ELA Gen Ed Dedicated', 'Science Gen Ed Dedicated',
-    'Social Sciences Gen Ed Dedicated', 'Math Separated Dedicated',
-    'ELA Separated Dedicated', 'Science Separated Dedicated',
-    'Social Sciences Separated Dedicated', 'Math Gen Ed Shared',
-    'ELA Gen Ed Shared', 'Science GE Shared', 'Social Science Gen Ed Shared',
-    'Math Separated Shared', 'ELA Separated Shared', 'Science Separated Shared',
-    'Social Science Separated Shared', 'Math Comm Dedicated',
-    'ELA Comm Dedicated', 'Science Comm Dedicated',
-    'Social Sciences Comm Dedicated', 'Math Comm Shared', 'ELA Comm Shared',
-    'Science Comm Shared', 'Social Sciences Comm Shared',
-    ]
-    export const aide_additional = [
+
+export const aide_additional = [
     'Other1 Gen Ed Dedicated', 'Other2 Gen Ed Dedicated',
     'Other3 Gen Ed Dedicated', 'Other1 Separated Dedicated',
     'Other2 Separated Dedicated', 'Other3 Separated Dedicated',
@@ -87,7 +189,7 @@ export const teacher_additional = [
     'Other3 Comm Dedicated', 'Other1 Comm Shared', 'Other2 Comm Shared',
     'Other3 Comm Shared'
     ]
-    export const aide_services = [
+export const aide_services = [
    'Behavior Aud Dedicated',
    'Behavior Bath Dedicated', 'Behavior Comm Dedicated',
    'Behavior Gym Dedicated', 'Behavior Hall Dedicated',
@@ -104,15 +206,15 @@ export const teacher_additional = [
    'Not Independent Shared', 'Not Toilet Shared', 'Walker Shared',
    'Wheel Chair Shared', 'CB Include'
     ]
-    export const aide_totals = [
-'Total Behavior Dedicated',
-'Total Behavior Shared', 'Total Instructional Dedicated',
-'Total Instructional Shared', 'Total Personal Care Dedicated',
-'Total Personal Care Shared', 'Total Dedicated', 'Total Shared',
-'Speech indirect min/wk', 'SW indirect min/wk', 'OT indirect min/wk',
-'PT indirect min/wk', 'Nurse indirect min/wk', 'Psych indirect min/wk',
-'Source'
+export const aide_totals = [
+    'Total Behavior Dedicated',
+    'Total Behavior Shared', 'Total Instructional Dedicated',
+    'Total Instructional Shared', 'Total Personal Care Dedicated',
+    'Total Personal Care Shared', 'Total Dedicated', 'Total Shared',
+    'Speech indirect min/wk', 'SW indirect min/wk', 'OT indirect min/wk',
+    'PT indirect min/wk', 'Nurse indirect min/wk', 'Psych indirect min/wk',
+    'Source'
     ]
 
-    export const final_columns = teacher_core.concat(teacher_specials, teacher_rls, 
+export const final_columns = teacher_core.concat(teacher_specials, teacher_rls, 
     aide_core, aide_specials, aide_services, aide_totals)

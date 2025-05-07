@@ -5,9 +5,9 @@ import {
     } from './file-interfaces'
 
 import {
-    final_columns,
-    display_info,
-    drop_columns
+    finalColumns,
+    displayInfo,
+    dropColumns
     } from './dl-scheduling-constants'
 
     const isNumeric = (str: unknown) => {
@@ -40,7 +40,7 @@ import {
                     }
                 })
             })
-            const newKeys: string[] = Object.keys(usedColumns).filter(k => usedColumns[k] && !drop_columns.includes(k))
+            const newKeys: string[] = Object.keys(usedColumns).filter(k => usedColumns[k] && !dropColumns.includes(k))
             const newArray: {[key: string]: {[key: string]: string}} = {}
             array.forEach(row => {
                 newArray[row[keyCol]] = newKeys.reduce((obj, key) => {
@@ -54,7 +54,7 @@ import {
         const [filteredSped, spedKeys] = dropUnusedColumns(sped.filter(row => row.PDIS !== '--') as {[key: string]:any}[], 'Student ID')
         const [filteredAide, aideKeys] = dropUnusedColumns(aide.filter(row => row.PDIS !== '--') as {[key: string]:any}[], 'Student ID')
     
-        const finalUsedColumns = final_columns.filter(value => spedKeys.includes(value) || aideKeys.includes(value))
+        const finalUsedColumns = finalColumns.filter(value => spedKeys.includes(value) || aideKeys.includes(value))
         const joinedMinutes:{[key:string]: string}[] = []
         //create joined sped & aide rows, ordered sped keys for student ID's
         
@@ -86,7 +86,7 @@ import {
                         return
                     }
             const combinedStudent:{[key:string]: string} = {}
-            display_info.forEach( key => {
+            displayInfo.forEach( key => {
                 
                 if(filteredSped[studentID][key]){
                     combinedStudent[key] = filteredSped[studentID][key]

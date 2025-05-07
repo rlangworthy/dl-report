@@ -1,7 +1,7 @@
 
 //FIXME replace these names with javascript styled names
 
-export const display_info = [
+export const displayInfo = [
     'Student ID', 
     'Name',
     'Current Homeroom', 
@@ -11,7 +11,7 @@ export const display_info = [
     'ARS',
     'PDIS'
 ]
-export const info_columns = [
+export const infoColumns = [
     'Current Homeroom', 
     'Name',
     'Birthdate',
@@ -25,7 +25,7 @@ export const info_columns = [
     'Cluster Program'
     ]
 
-export const drop_columns = [
+export const dropColumns = [
     'School',
     'Network',
     'School Code',
@@ -52,7 +52,7 @@ export const teacherCoreSep = [
     'Social Sciences Sep'
 ]
 
-export const teacher_core = teacherCoreGenEd.concat(teacherCoreSep)
+export const teacherCore = teacherCoreGenEd.concat(teacherCoreSep)
 
 export const teacherSpecialsGenEd = [
     'Art Gen Ed', 
@@ -76,9 +76,9 @@ export const teacherSpecialsSep = [
     'World Language Sep'
 ]
 
-export const teacher_specials = teacherSpecialsGenEd.concat(teacherSpecialsSep)
+export const teacherSpecials = teacherSpecialsGenEd.concat(teacherSpecialsSep)
 
-export const teacher_rls = [
+export const teacherRLS = [
     'Speech Gen Ed',
     'SW Gen Ed',
     'OT Gen Ed',
@@ -93,7 +93,7 @@ export const teacher_rls = [
     'Psych Sep'
     ]
 
-export const teacher_rls_totals = [
+export const teacherRLSTotals = [
     'Speech indirect min/wk',
     'SW indirect min/wk', 
     'OT indirect min/wk', 
@@ -102,7 +102,7 @@ export const teacher_rls_totals = [
     'Psych indirect min/wk'
     ]
 
-export const teacher_additional = [
+export const teacherAdditional = [
     'Independent Function Gen Ed',
     'Social Emotional Gen Ed', 
     'Other1 Gen Ed',
@@ -149,9 +149,9 @@ export const aideCoreComm = [
     'Social Sciences Comm Shared',
 ]
 
-export const aide_core = aideCoreGenEd.concat(aideCoreSeperate, aideCoreComm)
+export const aideCore = aideCoreGenEd.concat(aideCoreSeperate, aideCoreComm)
 
-export const aide_specials = [
+export const aideHolistics = [
     'Art GE Dedicated', 
     'Computers Gen Ed Dedicated',
     'Physical Ed Gen Ed Dedicated', 
@@ -180,7 +180,7 @@ export const aide_specials = [
      'Vocational Comm Shared', 'World Language Comm Shared'
     ]
 
-export const aide_additional = [
+export const aideMisc = [
     'Other1 Gen Ed Dedicated', 'Other2 Gen Ed Dedicated',
     'Other3 Gen Ed Dedicated', 'Other1 Separated Dedicated',
     'Other2 Separated Dedicated', 'Other3 Separated Dedicated',
@@ -189,7 +189,7 @@ export const aide_additional = [
     'Other3 Comm Dedicated', 'Other1 Comm Shared', 'Other2 Comm Shared',
     'Other3 Comm Shared'
     ]
-export const aide_services = [
+export const aideAdditional = [
    'Behavior Aud Dedicated',
    'Behavior Bath Dedicated', 'Behavior Comm Dedicated',
    'Behavior Gym Dedicated', 'Behavior Hall Dedicated',
@@ -206,7 +206,7 @@ export const aide_services = [
    'Not Independent Shared', 'Not Toilet Shared', 'Walker Shared',
    'Wheel Chair Shared', 'CB Include'
     ]
-export const aide_totals = [
+export const aideTotals = [
     'Total Behavior Dedicated',
     'Total Behavior Shared', 'Total Instructional Dedicated',
     'Total Instructional Shared', 'Total Personal Care Dedicated',
@@ -216,5 +216,5 @@ export const aide_totals = [
     'Source'
     ]
 
-export const final_columns = teacher_core.concat(teacher_specials, teacher_rls, 
-    aide_core, aide_specials, aide_services, aide_totals)
+export const finalColumns = teacherCore.concat(teacherSpecials, teacherRLS, 
+    aideCore, aideHolistics, aideAdditional, aideTotals)

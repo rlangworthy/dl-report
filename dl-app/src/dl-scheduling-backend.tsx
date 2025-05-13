@@ -9,6 +9,10 @@ import {
     displayInfo,
     dropColumns
     } from './dl-scheduling-constants'
+interface DLScheduleOutput { 
+    data: {[key:string]:string}[],
+    gradeCount: {[key:string]:number}//metadata, count of number of students in each grade
+}
 
     const isNumeric = (str: unknown) => {
         if (typeof str != "string") return false // we only process strings!  

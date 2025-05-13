@@ -1,3 +1,4 @@
+import { addFormatting } from "./formatting";
 
 
 export function createGoogleSheet(data : {[key:string]:string}[]) {
@@ -41,6 +42,7 @@ export function createGoogleSheet(data : {[key:string]:string}[]) {
             valueInputOption: "USER_ENTERED"
           }
         }).then(() => {
+          addFormatting(spreadsheet, columns, values.length)
           const url = response.result.spreadsheetUrl
           window.open(url, "_blank")
         })

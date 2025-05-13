@@ -3,7 +3,7 @@ import * as Consts from './dl-scheduling-constants'
 
 
 //takes a list of serach values and finds all of those included in a whole set
-export const getOverlap = (searchValues: string[], wholeSet: string[]): number => {
+const getOverlap = (searchValues: string[], wholeSet: string[]): number => {
     return searchValues.filter(value => wholeSet.includes(value)).length
 }
 
@@ -19,22 +19,26 @@ export const getTeacherCoreSepSpan = (headers: string[]):number => {
     return getOverlap(Consts.teacherCoreSep, headers)
 }
 
-export const getTeacherAdditional = (headers: string[]):number => {
-    return getOverlap(Consts.teacherAdditional, headers)
+export const getTeacherAdditionalSpan = (headers: string[]):number => {
+    return getOverlap(Consts.teacherAdditional, headers) + getOverlap(Consts.teacherRLS, headers)
 }
 
-export const getAideCoreGenEd = (headers: string[]):number => {
+export const getAideCoreGenEdSpan = (headers: string[]):number => {
     return getOverlap(Consts.aideCoreGenEd, headers)
 }
 
-export const getAideCoreSeperate = (headers: string[]):number => {
+export const getAideCoreSeperateSpan = (headers: string[]):number => {
     return getOverlap(Consts.aideCoreSeperate, headers)
 }
 
-export const getAideAdditional = (headers: string[]):number => {
+export const getAideAdditionalSpan = (headers: string[]):number => {
     return getOverlap(Consts.aideAdditional, headers)
 }
 
-export const getAideHolistics = (headers: string[]): number => {
+export const getAideHolisticsSpan = (headers: string[]): number => {
     return getOverlap(Consts.aideHolistics, headers)
+}
+
+export const getInfoColumnSpan = (headers: string[]): number => {
+    return getOverlap(Consts.infoColumns, headers)
 }

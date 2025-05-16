@@ -1,5 +1,8 @@
 
-//FIXME replace these names with javascript styled names
+export interface DLScheduleOutput { 
+    data: {[key:string]:string}[],
+    gradeCount: {[key:string]:number}//metadata, count of number of students in each grade
+}
 
 export const displayInfo = [
     'Student ID', 
@@ -151,34 +154,61 @@ export const aideCoreComm = [
 
 export const aideCore = aideCoreGenEd.concat(aideCoreSeperate, aideCoreComm)
 
-export const aideHolistics = [
+export const aideHolisticsGened = [
     'Art GE Dedicated', 
     'Computers Gen Ed Dedicated',
     'Physical Ed Gen Ed Dedicated', 
     'Health Ed Gen Ed Dedicated',
     'Library Gen Ed Dedicated', 
-     
     'Music Gen Ed Dedicated',
-    'Vocational Gen Ed Dedicated', 'World Language Gen Ed Dedicated',
-     'Art Separated Dedicated', 'Computers Separated Dedicated',
-     'Physical Ed Separated Dedicated', 'Health Ed Separated Dedicated',
-     'Library Separated Dedicated', 'Music Separated Dedicated',
-     'Vocational Separated Dedicated', 'World Language Separated Dedicated',
-     'Art Gen Ed Shared', 'Computers Gen Ed Shared', 'Physical Ed Gen Ed Shared',
-     'Health Ed Gen Ed Shared', 'Library Gen Ed Shared', 'Music Gen Ed Shared',
-     'Vocational Gen Ed Shared', 'World Language Gen Ed Shared',
-     'Art Separated Shared', 'Computers Separated Shared',
-     'Physical Ed Separated Shared', 'Health Ed Separated Shared',
-     'Library Separated Shared', 'Music Separated Shared',
-     'Vocational Separated Shared', 'World Language Separated Shared',
-     'Art Comm Dedicated', 'Computers Comm Dedicated',
-     'Physical Ed Comm Dedicated', 'Health Ed Comm Dedicated',
-     'Library Comm Dedicated', 'Music Comm Dedicated',
-     'Vocational Comm Dedicated', 'World Language Comm Dedicated',
-     'Art Comm Shared', 'Computers Comm Shared', 'Physical Ed Comm Shared',
-     'Health Ed Comm Shared', 'Library Comm Shared', 'Music Comm Shared',
-     'Vocational Comm Shared', 'World Language Comm Shared'
+    'Vocational Gen Ed Dedicated', 
+    'World Language Gen Ed Dedicated',
+    'Art Gen Ed Shared', 
+    'Computers Gen Ed Shared', 
+    'Physical Ed Gen Ed Shared',
+    'Health Ed Gen Ed Shared', 
+    'Library Gen Ed Shared', 
+    'Music Gen Ed Shared',
+    'Vocational Gen Ed Shared', 
+    'World Language Gen Ed Shared',
+
+    'Art Comm Dedicated', 
+    'Computers Comm Dedicated',
+    'Physical Ed Comm Dedicated', 
+    'Health Ed Comm Dedicated',
+    'Library Comm Dedicated', 
+    'Music Comm Dedicated',
+    'Vocational Comm Dedicated', 
+    'World Language Comm Dedicated',
+    'Art Comm Shared', 
+    'Computers Comm Shared', 
+    'Physical Ed Comm Shared',
+    'Health Ed Comm Shared', 
+    'Library Comm Shared', 
+    'Music Comm Shared',
+    'Vocational Comm Shared', 
+    'World Language Comm Shared'
     ]
+export const aideHolisticsSeperate = [
+    'Art Separated Dedicated', 
+    'Computers Separated Dedicated',
+    'Physical Ed Separated Dedicated', 
+    'Health Ed Separated Dedicated',
+    'Library Separated Dedicated', 
+    'Music Separated Dedicated',
+    'Vocational Separated Dedicated', 
+    'World Language Separated Dedicated',
+    'Art Separated Shared', 
+    'Computers Separated Shared',
+    'Physical Ed Separated Shared', 
+    'Health Ed Separated Shared',
+    'Library Separated Shared', 
+    'Music Separated Shared',
+    'Vocational Separated Shared', 
+    'World Language Separated Shared',
+]
+
+export const aideHolistics = aideHolisticsGened.concat(aideHolisticsSeperate)
 
 export const aideMisc = [
     'Other1 Gen Ed Dedicated', 'Other2 Gen Ed Dedicated',
@@ -216,5 +246,5 @@ export const aideTotals = [
     'Source'
     ]
 
-export const finalColumns = teacherCore.concat(teacherSpecials, teacherRLS, 
+export const finalColumns = teacherCore.concat(teacherSpecials, 
     aideCore, aideHolistics, aideAdditional, aideTotals)

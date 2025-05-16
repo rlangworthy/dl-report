@@ -7,12 +7,12 @@ import {
 import {
     finalColumns,
     displayInfo,
-    dropColumns
+    dropColumns,
+    DLScheduleOutput
     } from './dl-scheduling-constants'
-interface DLScheduleOutput { 
-    data: {[key:string]:string}[],
-    gradeCount: {[key:string]:number}//metadata, count of number of students in each grade
-}
+
+import { parseGrade } from './formatting-helpers'
+
 
     const isNumeric = (str: unknown) => {
         if (typeof str != "string") return false // we only process strings!  
@@ -21,7 +21,7 @@ interface DLScheduleOutput {
       }
 
     export const createDLScheduleDoc = (sped: RawStudentSpecialEdInstructionRow[], 
-        aide: RawStudentParaprofessionalMinutesRow[]):{[key:string]:string}[] => {
+        aide: RawStudentParaprofessionalMinutesRow[]):DLScheduleOutput => {
         
             /*
         Clear unused columns for sped and aide
@@ -62,15 +62,7 @@ interface DLScheduleOutput {
         const joinedMinutes:{[key:string]: string}[] = []
         //create joined sped & aide rows, ordered sped keys for student ID's
         
-        const parseGrade = (a: string): Number => {
-            if(a === 'K'){
-                return 0
-            }
-            if(a === 'PK'){
-                return -1
-            }
-            return parseInt(a)
-        }
+        
     
         Object.keys(filteredSped)
         .sort((a,b) => {
@@ -125,7 +117,22 @@ interface DLScheduleOutput {
             joinedMinutes.push({...combinedStudent})
         })
         
-    
+        
         console.log(joinedMinutes)
-        return joinedMinutes
+        return {data: joinedMinutes, gradeCount:getGradeCounts(joinedMinutes)}
+    }
+
+
+    const getGradeCounts = (joinedMinutes: {[key:string]:string}[]): {[key:string]:number} => {
+        const grades:{[key:string]:number} = {}
+        joinedMinutes.forEach(student => {
+            
+            if(student["Grade"] !== undefined){
+                if(grades[student["Grade"]] == undefined){
+                    grades[student["Grade"]] = 0
+                }
+                grades[student["Grade"]] += 1
+            }
+        })
+        return grades
     }

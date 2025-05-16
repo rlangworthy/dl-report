@@ -1,6 +1,14 @@
 import * as Consts from './dl-scheduling-constants'
 
-
+export const parseGrade = (a: string): Number => {
+            if(a === 'K'){
+                return 0
+            }
+            if(a === 'PK'){
+                return -1
+            }
+            return parseInt(a)
+        }
 
 //takes a list of serach values and finds all of those included in a whole set
 const getOverlap = (searchValues: string[], wholeSet: string[]): number => {
@@ -35,8 +43,12 @@ export const getAideAdditionalSpan = (headers: string[]):number => {
     return getOverlap(Consts.aideAdditional, headers)
 }
 
-export const getAideHolisticsSpan = (headers: string[]): number => {
-    return getOverlap(Consts.aideHolistics, headers)
+export const getAideHolisticsGenedSpan = (headers: string[]): number => {
+    return getOverlap(Consts.aideHolisticsGened, headers)
+}
+
+export const getAideHolisticsSeperateSpan = (headers: string[]): number => {
+    return getOverlap(Consts.aideHolisticsSeperate, headers)
 }
 
 export const getInfoColumnSpan = (headers: string[]): number => {

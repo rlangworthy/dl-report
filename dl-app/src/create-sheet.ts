@@ -1,8 +1,8 @@
 import { addFormatting } from "./formatting";
+import { DLScheduleOutput } from "./dl-scheduling-constants";
 
-
-export function createGoogleSheet(data : {[key:string]:string}[]) {
-
+export function createGoogleSheet(output: DLScheduleOutput) {
+    const data = output.data
     const columns = Object.keys(data[0])
     const TITLE = "DL Scheduling Aid"
 
@@ -42,7 +42,7 @@ export function createGoogleSheet(data : {[key:string]:string}[]) {
             valueInputOption: "USER_ENTERED"
           }
         }).then(() => {
-          addFormatting(spreadsheet, columns, values.length)
+          addFormatting(spreadsheet, columns, values.length, output.gradeCount)
           const url = response.result.spreadsheetUrl
           window.open(url, "_blank")
         })

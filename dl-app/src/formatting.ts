@@ -1,17 +1,23 @@
 
+import { aideHolisticsSeperate } from './dl-scheduling-constants'
 import * as Helpers from './formatting-helpers'
+
+const NUM_FORMATTING_ROWS = 3
 
 
 interface GridRange {
   "sheetId": number,
-  "startRowIndex": number,
-  "endRowIndex": number,
-  "startColumnIndex": number,
-  "endColumnIndex": number
+  "startRowIndex"?: number,
+  "endRowIndex"?: number,
+  "startColumnIndex"?: number,
+  "endColumnIndex"?: number
 }
 
 
-export const addFormatting = (spreadsheet: gapi.client.sheets.Spreadsheet, headers: string[], nRows: number) => {
+export const addFormatting = (spreadsheet: gapi.client.sheets.Spreadsheet, 
+  headers: string[], 
+  nRows: number,
+  gradeCount: {[key:string]:number}) => {
    // const spreadsheetId = spreadsheet.spreadsheetId;
 
     /*
@@ -34,23 +40,25 @@ export const addFormatting = (spreadsheet: gapi.client.sheets.Spreadsheet, heade
 
     
     const requests: Object[] = [
+      //add rows for organizing header data
       {
         "insertDimension": {
           "range": {
             "sheetId": sheetID,
             "dimension": "ROWS",
             "startIndex": 0,
-            "endIndex": 3
+            "endIndex": NUM_FORMATTING_ROWS
           },
           "inheritFromBefore": false
         }
       },
+      //center text in organizing rows
       {
         repeatCell: {
           range: {
             sheetId:sheetID,
             startRowIndex: 0,
-            endRowIndex: 4
+            endRowIndex: NUM_FORMATTING_ROWS+1
           },
           cell: {
             userEnteredFormat: {
@@ -62,12 +70,13 @@ export const addFormatting = (spreadsheet: gapi.client.sheets.Spreadsheet, heade
           fields: "userEnteredFormat(horizontalAlignment, verticalAlignment)"
         }
       },
+      //rotate header row text
       {
         repeatCell: {
           range: {
             sheetId:sheetID,
-            startRowIndex: 3,
-            endRowIndex: 4
+            startRowIndex: NUM_FORMATTING_ROWS,
+            endRowIndex: NUM_FORMATTING_ROWS+1
           },
           cell: {
             userEnteredFormat: {
@@ -78,6 +87,7 @@ export const addFormatting = (spreadsheet: gapi.client.sheets.Spreadsheet, heade
           fields: "userEnteredFormat(textRotation)"
         }
       },
+      //shrink columns to fit data
       {
         "autoResizeDimensions": {
           "dimensions": {
@@ -91,8 +101,9 @@ export const addFormatting = (spreadsheet: gapi.client.sheets.Spreadsheet, heade
     ]
     //add cell merges to requests
     Array.prototype.push.apply(requests,cellMerges); 
-
-  
+    Array.prototype.push.apply(requests,boldGradeBands(sheetID, gradeCount)); 
+    console.log('gradeCount')
+    console.log(gradeCount)
     var body:gapi.client.sheets.BatchUpdateSpreadsheetRequest = {requests: requests}
   
     window.gapi.client.sheets.spreadsheets.batchUpdate({
@@ -104,6 +115,29 @@ export const addFormatting = (spreadsheet: gapi.client.sheets.Spreadsheet, heade
 
   }
 
+  const boldGradeBands = (sheetID: number, gradeCount: {[key:string]:number}): Object[]=> {
+    var offset = NUM_FORMATTING_ROWS + 1
+    const boldRequests = Object.keys(gradeCount)
+      .sort((a,b) => Helpers.parseGrade(a) > Helpers.parseGrade(b) ? -1:1)
+      .map(grade => {
+        const request = createBatchUpdateCellBoldBordersRequest(
+            createRange(
+              sheetID, 
+              offset, 
+              offset+gradeCount[grade]
+              )
+            ,
+            {"bottom":{"style": "SOLID_MEDIUM"}}
+          )
+        offset += gradeCount[grade]
+        return request
+      }
+    )
+    console.log("sorting")
+    console.log(Object.keys(gradeCount)
+      .sort((a,b) => Helpers.parseGrade(a) > Helpers.parseGrade(b) ? -1:1))
+    return boldRequests
+  }
 
   const getCellMerges = (headers: string[], sheetID: number, nRows: number): Object[] => {
 
@@ -137,117 +171,127 @@ export const addFormatting = (spreadsheet: gapi.client.sheets.Spreadsheet, heade
     offset += Helpers.getAideCoreSeperateSpan(headers)
     const aideCoreSeperate = [aideCoreGened[1], offset]
 
-    offset += Helpers.getAideHolisticsSpan(headers)
+    offset += Helpers.getAideHolisticsGenedSpan(headers)
     const aideHolisticsGened = [aideCoreSeperate[1], offset]
 
+    offset += Helpers.getAideHolisticsSeperateSpan(headers)
+    const aideHolsticsSeperate = [aideHolisticsGened[1], offset]
+
     offset += Helpers.getAideAdditionalSpan(headers)
-    const aideAdditional = [aideHolisticsGened[1], offset]
+    const aideAdditional = [aideHolsticsSeperate[1], offset]
 
 
 
     const cellMerges: Object[] = [
       //all teacher fields top row merge + label row 1
       ...createBatchUpdateHeaderCellFormat(
-        makeRange(sheetID, 0, 1, teacherCoreGenEd[0], aideCoreGened[0]), "Teacher"),
+        createRange(sheetID, 0, 1, teacherCoreGenEd[0], aideCoreGened[0]), "Teacher"),
       //merge teacher core classes + label, row 2
       ...createBatchUpdateHeaderCellFormat(
-        makeRange(sheetID, 1, 2,teacherCoreGenEd[0], teacherCoreSep[1]), "Core"),
+        createRange(sheetID, 1, 2,teacherCoreGenEd[0], teacherCoreSep[1]), "Core"),
 
       //merge teacher core gened + label, row 3
       ...createBatchUpdateHeaderCellFormat(
-        makeRange(sheetID, 2, 3, teacherCoreGenEd[0], teacherCoreGenEd[1]), "GenEd"),
+        createRange(sheetID, 2, 3, teacherCoreGenEd[0], teacherCoreGenEd[1]), "GenEd"),
 
       //add left border to first column item
       createBatchUpdateCellBoldBordersRequest(
-        makeRange(sheetID, 3, nRows+3, teacherCoreGenEd[0], teacherCoreGenEd[0]+1),
+        createRange(sheetID, 3, nRows+3, teacherCoreGenEd[0], teacherCoreGenEd[0]+1),
         {"left": {"style": "SOLID_MEDIUM"}}),
       //add right border to last column item
       createBatchUpdateCellBoldBordersRequest(
-        makeRange(sheetID, 3, nRows+3, teacherCoreGenEd[1]-1, teacherCoreGenEd[1]),
+        createRange(sheetID, 3, nRows+3, teacherCoreGenEd[1]-1, teacherCoreGenEd[1]),
         {"right":{"style": "SOLID_MEDIUM"}}),
 
       //merge teacher core sep + label, row 3
       ...createBatchUpdateHeaderCellFormat(
-        makeRange(sheetID, 2, 3,teacherCoreSep[0], teacherCoreSep[1]), "Seperate"),
+        createRange(sheetID, 2, 3,teacherCoreSep[0], teacherCoreSep[1]), "Seperate"),
       
       //add left border to first column item
       createBatchUpdateCellBoldBordersRequest(
-        makeRange(sheetID, 3, nRows+3, teacherCoreSep[0], teacherCoreSep[0]+1),
+        createRange(sheetID, 3, nRows+3, teacherCoreSep[0], teacherCoreSep[0]+1),
         {"left": {"style": "SOLID_MEDIUM"}}),
       //add right border to last column item
       createBatchUpdateCellBoldBordersRequest(
-        makeRange(sheetID, 3, nRows+3, teacherCoreSep[1]-1, teacherCoreSep[1]),
+        createRange(sheetID, 3, nRows+3, teacherCoreSep[1]-1, teacherCoreSep[1]),
         {"right":{"style": "SOLID_MEDIUM"}}),
         
         
       //all aide fields top row + label row 1
       ...createBatchUpdateHeaderCellFormat(
-        makeRange(sheetID, 0, 1, aideCoreGened[0], aideAdditional[1]), "Paraprofessional"),
+        createRange(sheetID, 0, 1, aideCoreGened[0], aideAdditional[1]), "Paraprofessional"),
       //aide core row 2
       ...createBatchUpdateHeaderCellFormat(
-        makeRange(sheetID, 1, 2,aideCoreGened[0], aideCoreSeperate[1]), "Core"),
+        createRange(sheetID, 1, 2,aideCoreGened[0], aideCoreSeperate[1]), "Core"),
       //aide holistics row 2 
       ...createBatchUpdateHeaderCellFormat(
-        makeRange(sheetID, 1, 2,aideHolisticsGened[0], aideHolisticsGened[1]), "Holistics"),
+        createRange(sheetID, 1, 2,aideHolisticsGened[0], aideHolisticsGened[1]), "Holistics"),
       //aide core gened row 3
       ...createBatchUpdateHeaderCellFormat(
-        makeRange(sheetID, 2, 3,aideCoreGened[0], aideCoreGened[1]), "GenEd"),
+        createRange(sheetID, 2, 3,aideCoreGened[0], aideCoreGened[1]), "GenEd"),
 
       //add left border to first column item
       createBatchUpdateCellBoldBordersRequest(
-        makeRange(sheetID, 3, nRows+3, aideCoreGened[0], aideCoreGened[0]+1),
+        createRange(sheetID, 3, nRows+3, aideCoreGened[0], aideCoreGened[0]+1),
         {"left":{"style": "SOLID_MEDIUM"}}),
       //add right border to last column item
       createBatchUpdateCellBoldBordersRequest(
-        makeRange(sheetID, 3, nRows+3, aideCoreGened[1]-1, aideCoreGened[1]),
+        createRange(sheetID, 3, nRows+3, aideCoreGened[1]-1, aideCoreGened[1]),
         {"right":{"style": "SOLID_MEDIUM"}}),
 
       //aide core seperate row 3
       ...createBatchUpdateHeaderCellFormat(
-        makeRange(sheetID, 2, 3,aideCoreSeperate[0], aideCoreSeperate[1]), "Seperate"),
+        createRange(sheetID, 2, 3,aideCoreSeperate[0], aideCoreSeperate[1]), "Seperate"),
 
       //add left border to first column item
       createBatchUpdateCellBoldBordersRequest(
-        makeRange(sheetID, 3, nRows+3, aideCoreSeperate[0], aideCoreSeperate[0]+1),
+        createRange(sheetID, 3, nRows+3, aideCoreSeperate[0], aideCoreSeperate[0]+1),
         {"left": {"style": "SOLID_MEDIUM"}}),
       //add right border to last column item
       createBatchUpdateCellBoldBordersRequest(
-        makeRange(sheetID, 3, nRows+3, aideCoreSeperate[1]-1, aideCoreSeperate[1]),
+        createRange(sheetID, 3, nRows+3, aideCoreSeperate[1]-1, aideCoreSeperate[1]),
         {"right":{"style": "SOLID_MEDIUM"}}),
 
       //aide holistic gened row 3
       ...createBatchUpdateHeaderCellFormat(
-        makeRange(sheetID, 2, 3,aideHolisticsGened[0], aideHolisticsGened[1]), "GenEd"),
+        createRange(sheetID, 2, 3,aideHolisticsGened[0], aideHolisticsGened[1]), "GenEd"),
 
       //add left border to first column item
       createBatchUpdateCellBoldBordersRequest(
-        makeRange(sheetID, 3, nRows+3, aideHolisticsGened[0], aideHolisticsGened[0]+1),
+        createRange(sheetID, 3, nRows+3, aideHolisticsGened[0], aideHolisticsGened[0]+1),
         {"left": {"style": "SOLID_MEDIUM"}}),
       //add right border to last column item
       createBatchUpdateCellBoldBordersRequest(
-        makeRange(sheetID, 3, nRows+3, aideHolisticsGened[1]-1, aideHolisticsGened[1]),
+        createRange(sheetID, 3, nRows+3, aideHolisticsGened[1]-1, aideHolisticsGened[1]),
         {"right": {"style": "SOLID_MEDIUM"}}),
 
       //aide holistic seperate row 3
-      //...createBatchUpdateMergeandAddText(2, aideCoreSeperate[0], aideCoreSeperate[1], sheetID, "Seperate"),
+      ...createBatchUpdateHeaderCellFormat(
+        createRange(sheetID, 2, 3, aideHolsticsSeperate[0], aideHolsticsSeperate[1])
+        , "Seperate"),
 
       //aide additionals, rows 2-3
       ...createBatchUpdateHeaderCellFormat(
-        makeRange(sheetID, 1, 3,aideAdditional[0], aideAdditional[1]), "Additional"),
+        createRange(sheetID, 1, 3,aideAdditional[0], aideAdditional[1]), "Additional"),
 
       //add left border to first column item
       createBatchUpdateCellBoldBordersRequest(
-        makeRange(sheetID, 3, nRows+3, aideAdditional[0], aideAdditional[0]+1),
+        createRange(sheetID, 3, nRows+3, aideAdditional[0], aideAdditional[0]+1),
         {"left": {"style": "SOLID_MEDIUM"}}),
       //add right border to last column item
       createBatchUpdateCellBoldBordersRequest(
-        makeRange(sheetID, 3, nRows+3, aideAdditional[1]-1, aideAdditional[1]),
+        createRange(sheetID, 3, nRows+3, aideAdditional[1]-1, aideAdditional[1]),
         {"right": {"style": "SOLID_MEDIUM"}}),
     ]
     return cellMerges
   }
 
-  const makeRange = (id: number, startRow: number ,endRow: number, startCol: number, endCol: number):GridRange => {
+  const createRange = (
+    id: number, 
+    startRow?: number, 
+    endRow?: number, 
+    startCol?: number, 
+    endCol?: number):GridRange => {
     return {
       sheetId:id,
       startColumnIndex:startCol,
@@ -299,6 +343,7 @@ export const addFormatting = (spreadsheet: gapi.client.sheets.Spreadsheet, heade
       },
     }
   }
+
   //merges cells in a range
   const createBatchUpdateCellMergeRequest = (range: GridRange):Object => {
     return {
@@ -314,6 +359,7 @@ export const addFormatting = (spreadsheet: gapi.client.sheets.Spreadsheet, heade
       }
     }
   }
+
   //adds text to cell at start
   const createBatchUpdateCellTextRequest = (range: GridRange, text: string): Object => {
     return {

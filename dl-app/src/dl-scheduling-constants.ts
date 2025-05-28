@@ -129,7 +129,7 @@ export const aideCoreGenEd = [
     'Social Science Gen Ed Shared',
 ]
 
-export const aideCoreSeperate = [
+export const aideCoreSeparate = [
     'Math Separated Dedicated',
     'ELA Separated Dedicated', 
     'Science Separated Dedicated',
@@ -152,7 +152,7 @@ export const aideCoreComm = [
     'Social Sciences Comm Shared',
 ]
 
-export const aideCore = aideCoreGenEd.concat(aideCoreSeperate, aideCoreComm)
+export const aideCore = aideCoreGenEd.concat(aideCoreSeparate, aideCoreComm)
 
 export const aideHolisticsGened = [
     'Art GE Dedicated', 
@@ -189,7 +189,7 @@ export const aideHolisticsGened = [
     'Vocational Comm Shared', 
     'World Language Comm Shared'
     ]
-export const aideHolisticsSeperate = [
+export const aideHolisticsSeparate = [
     'Art Separated Dedicated', 
     'Computers Separated Dedicated',
     'Physical Ed Separated Dedicated', 
@@ -208,7 +208,7 @@ export const aideHolisticsSeperate = [
     'World Language Separated Shared',
 ]
 
-export const aideHolistics = aideHolisticsGened.concat(aideHolisticsSeperate)
+export const aideHolistics = aideHolisticsGened.concat(aideHolisticsSeparate)
 
 export const aideMisc = [
     'Other1 Gen Ed Dedicated', 'Other2 Gen Ed Dedicated',

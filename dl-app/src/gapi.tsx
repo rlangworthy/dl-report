@@ -14,6 +14,10 @@ import {
 } from './dl-scheduling-backend'
 
 import {
+  DLScheduleOutput
+} from './dl-scheduling-constants'
+
+import {
   createGoogleSheet
 } from './create-sheet'
 
@@ -55,7 +59,7 @@ export function GoogleDownload() {
 
   const [sped, setSped] = useState<null | RawStudentSpecialEdInstructionRow[]>(null)
   const [aide, setAide] = useState<null | RawStudentParaprofessionalMinutesRow[]>(null)
-  const [data, setData] = useState<{[key: string]: string}[]>([])
+  const [data, setData] = useState<DLScheduleOutput>({data: [], gradeCount: {}})
 
   useEffect(() => {
       handleClientLoad();

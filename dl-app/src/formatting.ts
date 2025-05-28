@@ -1,5 +1,5 @@
 
-import { aideHolisticsSeperate } from './dl-scheduling-constants'
+import { aideHolisticsSeparate } from './dl-scheduling-constants'
 import * as Helpers from './formatting-helpers'
 
 const NUM_FORMATTING_ROWS = 3
@@ -168,17 +168,17 @@ export const addFormatting = (spreadsheet: gapi.client.sheets.Spreadsheet,
     offset += Helpers.getAideCoreGenEdSpan(headers)
     const aideCoreGened = [teacherRls[1], offset]
 
-    offset += Helpers.getAideCoreSeperateSpan(headers)
-    const aideCoreSeperate = [aideCoreGened[1], offset]
+    offset += Helpers.getAideCoreSeparateSpan(headers)
+    const aideCoreSeparate = [aideCoreGened[1], offset]
 
     offset += Helpers.getAideHolisticsGenedSpan(headers)
-    const aideHolisticsGened = [aideCoreSeperate[1], offset]
+    const aideHolisticsGened = [aideCoreSeparate[1], offset]
 
-    offset += Helpers.getAideHolisticsSeperateSpan(headers)
-    const aideHolsticsSeperate = [aideHolisticsGened[1], offset]
+    offset += Helpers.getAideHolisticsSeparateSpan(headers)
+    const aideHolsticsSeparate = [aideHolisticsGened[1], offset]
 
     offset += Helpers.getAideAdditionalSpan(headers)
-    const aideAdditional = [aideHolsticsSeperate[1], offset]
+    const aideAdditional = [aideHolsticsSeparate[1], offset]
 
 
 
@@ -205,7 +205,7 @@ export const addFormatting = (spreadsheet: gapi.client.sheets.Spreadsheet,
 
       //merge teacher core sep + label, row 3
       ...createBatchUpdateHeaderCellFormat(
-        createRange(sheetID, 2, 3,teacherCoreSep[0], teacherCoreSep[1]), "Seperate"),
+        createRange(sheetID, 2, 3,teacherCoreSep[0], teacherCoreSep[1]), "Separate"),
       
       //add left border to first column item
       createBatchUpdateCellBoldBordersRequest(
@@ -222,7 +222,7 @@ export const addFormatting = (spreadsheet: gapi.client.sheets.Spreadsheet,
         createRange(sheetID, 0, 1, aideCoreGened[0], aideAdditional[1]), "Paraprofessional"),
       //aide core row 2
       ...createBatchUpdateHeaderCellFormat(
-        createRange(sheetID, 1, 2,aideCoreGened[0], aideCoreSeperate[1]), "Core"),
+        createRange(sheetID, 1, 2,aideCoreGened[0], aideCoreSeparate[1]), "Core"),
       //aide holistics row 2 
       ...createBatchUpdateHeaderCellFormat(
         createRange(sheetID, 1, 2,aideHolisticsGened[0], aideHolisticsGened[1]), "Holistics"),
@@ -241,15 +241,15 @@ export const addFormatting = (spreadsheet: gapi.client.sheets.Spreadsheet,
 
       //aide core seperate row 3
       ...createBatchUpdateHeaderCellFormat(
-        createRange(sheetID, 2, 3,aideCoreSeperate[0], aideCoreSeperate[1]), "Seperate"),
+        createRange(sheetID, 2, 3,aideCoreSeparate[0], aideCoreSeparate[1]), "Separate"),
 
       //add left border to first column item
       createBatchUpdateCellBoldBordersRequest(
-        createRange(sheetID, 3, nRows+3, aideCoreSeperate[0], aideCoreSeperate[0]+1),
+        createRange(sheetID, 3, nRows+3, aideCoreSeparate[0], aideCoreSeparate[0]+1),
         {"left": {"style": "SOLID_MEDIUM"}}),
       //add right border to last column item
       createBatchUpdateCellBoldBordersRequest(
-        createRange(sheetID, 3, nRows+3, aideCoreSeperate[1]-1, aideCoreSeperate[1]),
+        createRange(sheetID, 3, nRows+3, aideCoreSeparate[1]-1, aideCoreSeparate[1]),
         {"right":{"style": "SOLID_MEDIUM"}}),
 
       //aide holistic gened row 3
@@ -267,8 +267,8 @@ export const addFormatting = (spreadsheet: gapi.client.sheets.Spreadsheet,
 
       //aide holistic seperate row 3
       ...createBatchUpdateHeaderCellFormat(
-        createRange(sheetID, 2, 3, aideHolsticsSeperate[0], aideHolsticsSeperate[1])
-        , "Seperate"),
+        createRange(sheetID, 2, 3, aideHolsticsSeparate[0], aideHolsticsSeparate[1])
+        , "Separate"),
 
       //aide additionals, rows 2-3
       ...createBatchUpdateHeaderCellFormat(

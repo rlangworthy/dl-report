@@ -35,8 +35,8 @@ export const getAideCoreGenEdSpan = (headers: string[]):number => {
     return getOverlap(Consts.aideCoreGenEd, headers)
 }
 
-export const getAideCoreSeperateSpan = (headers: string[]):number => {
-    return getOverlap(Consts.aideCoreSeperate, headers)
+export const getAideCoreSeparateSpan = (headers: string[]):number => {
+    return getOverlap(Consts.aideCoreSeparate, headers)
 }
 
 export const getAideAdditionalSpan = (headers: string[]):number => {
@@ -47,8 +47,8 @@ export const getAideHolisticsGenedSpan = (headers: string[]): number => {
     return getOverlap(Consts.aideHolisticsGened, headers)
 }
 
-export const getAideHolisticsSeperateSpan = (headers: string[]): number => {
-    return getOverlap(Consts.aideHolisticsSeperate, headers)
+export const getAideHolisticsSeparateSpan = (headers: string[]): number => {
+    return getOverlap(Consts.aideHolisticsSeparate, headers)
 }
 
 export const getInfoColumnSpan = (headers: string[]): number => {

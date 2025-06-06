@@ -1,5 +1,4 @@
 
-import { aideHolisticsSeparate } from './dl-scheduling-constants'
 import * as Helpers from './formatting-helpers'
 
 const NUM_FORMATTING_ROWS = 3
@@ -102,8 +101,8 @@ export const addFormatting = (spreadsheet: gapi.client.sheets.Spreadsheet,
     //add cell merges to requests
     Array.prototype.push.apply(requests,cellMerges); 
     Array.prototype.push.apply(requests,boldGradeBands(sheetID, gradeCount)); 
-    console.log('gradeCount')
-    console.log(gradeCount)
+    console.log('Formatting Requests')
+    console.log(requests)
     var body:gapi.client.sheets.BatchUpdateSpreadsheetRequest = {requests: requests}
   
     window.gapi.client.sheets.spreadsheets.batchUpdate({

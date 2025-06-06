@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "deploy-remote": "ssh -t rlangworthy@10.129.210.11 'sudo rm -r /var/www/dl-scheduling/* /home/rlangworthy/repos/dl-scheduling/dist/*' && scp -r ./dist/* rlangworthy@10.129.210.11:/home/rlangworthy/repos/dl-scheduling/dist && ssh -t rlangworthy@10.129.210.11 'sudo rsync -rtv /home/rlangworthy/repos/dl-scheduling/dist/ /var/www/dl-scheduling/ && sudo restorecon -R /var/www/dl-scheduling'"
+    "deploy-remote": "ssh -t rlangworthy@10.129.210.4 'sudo rm -r /var/www/dl-scheduling/* /home/rlangworthy/repos/dl-scheduling/dist/*' && scp -r ./dist/* rlangworthy@10.129.210.4:/home/rlangworthy/repos/dl-scheduling/dist && ssh -t rlangworthy@10.129.210.4 'sudo rsync -rtv /home/rlangworthy/repos/dl-scheduling/dist/ /var/www/dl-scheduling/ && sudo restorecon -R /var/www/dl-scheduling'"
   },
   "dependencies": {
     "@types/gapi": "^0.0.47",

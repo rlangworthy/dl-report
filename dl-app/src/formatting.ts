@@ -1,6 +1,10 @@
 
 import * as Helpers from './formatting-helpers'
-
+/*import {
+  spans,
+  spanList
+} from './dl-scheduling-constants'
+*/
 const NUM_FORMATTING_ROWS = 3
 
 
@@ -141,65 +145,76 @@ export const addFormatting = (spreadsheet: gapi.client.sheets.Spreadsheet,
   const getCellMerges = (headers: string[], sheetID: number, nRows: number): Object[] => {
 
     /*
-    teacher | core | teacher core gened
+    teacher | core | teacher core Inclusion
     teacher | core | teacher core seperate
     teacher | additional | teacher rls
-    para | core |aide core gened
+    para | core |aide core Inclusion
     para | core | aide core seperate
-    para | aide holistics gened
+    para | aide holistics Inclusion
     aide holistics seperate - FIXME split these later
     aide additional  
     */
-   //FIXME aide holistics seperates
+
+    //FIXME add safety checks on spans, break requests into smaller portions
+console.log('Spans')
 
     let offset = Helpers.getInfoColumnSpan(headers)+1
     const infoFields = [0, offset]
+console.log(infoFields)
 
-    offset += Helpers.getTeacherCoreGenEdSpan(headers)
-    const teacherCoreGenEd = [infoFields[1], offset]
+    offset += Helpers.getTeacherCoreInclusionSpan(headers)
+    const teacherCoreInclusion = [infoFields[1], offset > infoFields[1] ? offset : offset + 1]
+console.log(teacherCoreInclusion)
 
     offset += Helpers.getTeacherCoreSepSpan(headers)
-    const teacherCoreSep = [teacherCoreGenEd[1], offset]
+    const teacherCoreSep = [teacherCoreInclusion[1], offset > teacherCoreInclusion[1] ? offset : offset + 1]
+console.log(teacherCoreSep)
 
     offset += Helpers.getTeacherAdditionalSpan(headers)
-    const teacherRls = [teacherCoreSep[1], offset]
+    const teacherRls = [teacherCoreSep[1], offset > teacherCoreSep[1] ? offset : offset + 1]
+console.log(teacherRls)
 
-    offset += Helpers.getAideCoreGenEdSpan(headers)
-    const aideCoreGened = [teacherRls[1], offset]
+    offset += Helpers.getAideCoreInclusionSpan(headers)
+    const aideCoreInclusion = [teacherRls[1], offset > teacherRls[1] ? offset : offset + 1]
+console.log(aideCoreInclusion)
 
     offset += Helpers.getAideCoreSeparateSpan(headers)
-    const aideCoreSeparate = [aideCoreGened[1], offset]
+    const aideCoreSeparate = [aideCoreInclusion[1], offset > aideCoreInclusion[1] ? offset : offset + 1]
+console.log(aideCoreSeparate)
 
-    offset += Helpers.getAideHolisticsGenedSpan(headers)
-    const aideHolisticsGened = [aideCoreSeparate[1], offset]
+    offset += Helpers.getAideHolisticsInclusionSpan(headers)
+    const aideHolisticsInclusion = [aideCoreSeparate[1], offset > aideCoreSeparate[1] ? offset : offset + 1]
+console.log(aideHolisticsInclusion)
 
     offset += Helpers.getAideHolisticsSeparateSpan(headers)
-    const aideHolsticsSeparate = [aideHolisticsGened[1], offset]
+    const aideHolsticsSeparate = [aideHolisticsInclusion[1], offset > aideHolisticsInclusion[1] ? offset : offset + 1]
+console.log(aideHolsticsSeparate)
 
     offset += Helpers.getAideAdditionalSpan(headers)
-    const aideAdditional = [aideHolsticsSeparate[1], offset]
+    const aideAdditional = [aideHolsticsSeparate[1], offset > aideHolsticsSeparate[1] ? offset : offset + 1]
+console.log(aideAdditional)
 
-
+    
 
     const cellMerges: Object[] = [
       //all teacher fields top row merge + label row 1
       ...createBatchUpdateHeaderCellFormat(
-        createRange(sheetID, 0, 1, teacherCoreGenEd[0], aideCoreGened[0]), "Teacher"),
+        createRange(sheetID, 0, 1, teacherCoreInclusion[0], aideCoreInclusion[0]), "Teacher"),
       //merge teacher core classes + label, row 2
       ...createBatchUpdateHeaderCellFormat(
-        createRange(sheetID, 1, 2,teacherCoreGenEd[0], teacherCoreSep[1]), "Core"),
+        createRange(sheetID, 1, 2,teacherCoreInclusion[0], teacherCoreSep[1]), "Core"),
 
-      //merge teacher core gened + label, row 3
+      //merge teacher core Inclusion + label, row 3
       ...createBatchUpdateHeaderCellFormat(
-        createRange(sheetID, 2, 3, teacherCoreGenEd[0], teacherCoreGenEd[1]), "GenEd"),
+        createRange(sheetID, 2, 3, teacherCoreInclusion[0], teacherCoreInclusion[1]), "Inclusion"),
 
       //add left border to first column item
       createBatchUpdateCellBoldBordersRequest(
-        createRange(sheetID, 3, nRows+3, teacherCoreGenEd[0], teacherCoreGenEd[0]+1),
+        createRange(sheetID, 3, nRows+3, teacherCoreInclusion[0], teacherCoreInclusion[0]+1),
         {"left": {"style": "SOLID_MEDIUM"}}),
       //add right border to last column item
       createBatchUpdateCellBoldBordersRequest(
-        createRange(sheetID, 3, nRows+3, teacherCoreGenEd[1]-1, teacherCoreGenEd[1]),
+        createRange(sheetID, 3, nRows+3, teacherCoreInclusion[1]-1, teacherCoreInclusion[1]),
         {"right":{"style": "SOLID_MEDIUM"}}),
 
       //merge teacher core sep + label, row 3
@@ -218,24 +233,24 @@ export const addFormatting = (spreadsheet: gapi.client.sheets.Spreadsheet,
         
       //all aide fields top row + label row 1
       ...createBatchUpdateHeaderCellFormat(
-        createRange(sheetID, 0, 1, aideCoreGened[0], aideAdditional[1]), "Paraprofessional"),
+        createRange(sheetID, 0, 1, aideCoreInclusion[0], aideAdditional[1]), "Paraprofessional"),
       //aide core row 2
       ...createBatchUpdateHeaderCellFormat(
-        createRange(sheetID, 1, 2,aideCoreGened[0], aideCoreSeparate[1]), "Core"),
+        createRange(sheetID, 1, 2,aideCoreInclusion[0], aideCoreSeparate[1]), "Core"),
       //aide holistics row 2 
       ...createBatchUpdateHeaderCellFormat(
-        createRange(sheetID, 1, 2,aideHolisticsGened[0], aideHolisticsGened[1]), "Holistics"),
-      //aide core gened row 3
+        createRange(sheetID, 1, 2,aideHolisticsInclusion[0], aideHolisticsInclusion[1]), "Holistics"),
+      //aide core Inclusion row 3
       ...createBatchUpdateHeaderCellFormat(
-        createRange(sheetID, 2, 3,aideCoreGened[0], aideCoreGened[1]), "GenEd"),
+        createRange(sheetID, 2, 3,aideCoreInclusion[0], aideCoreInclusion[1]), "Inclusion"),
 
       //add left border to first column item
       createBatchUpdateCellBoldBordersRequest(
-        createRange(sheetID, 3, nRows+3, aideCoreGened[0], aideCoreGened[0]+1),
+        createRange(sheetID, 3, nRows+3, aideCoreInclusion[0], aideCoreInclusion[0]+1),
         {"left":{"style": "SOLID_MEDIUM"}}),
       //add right border to last column item
       createBatchUpdateCellBoldBordersRequest(
-        createRange(sheetID, 3, nRows+3, aideCoreGened[1]-1, aideCoreGened[1]),
+        createRange(sheetID, 3, nRows+3, aideCoreInclusion[1]-1, aideCoreInclusion[1]),
         {"right":{"style": "SOLID_MEDIUM"}}),
 
       //aide core seperate row 3
@@ -251,17 +266,17 @@ export const addFormatting = (spreadsheet: gapi.client.sheets.Spreadsheet,
         createRange(sheetID, 3, nRows+3, aideCoreSeparate[1]-1, aideCoreSeparate[1]),
         {"right":{"style": "SOLID_MEDIUM"}}),
 
-      //aide holistic gened row 3
+      //aide holistic Inclusion row 3
       ...createBatchUpdateHeaderCellFormat(
-        createRange(sheetID, 2, 3,aideHolisticsGened[0], aideHolisticsGened[1]), "GenEd"),
+        createRange(sheetID, 2, 3,aideHolisticsInclusion[0], aideHolisticsInclusion[1]), "Inclusion"),
 
       //add left border to first column item
       createBatchUpdateCellBoldBordersRequest(
-        createRange(sheetID, 3, nRows+3, aideHolisticsGened[0], aideHolisticsGened[0]+1),
+        createRange(sheetID, 3, nRows+3, aideHolisticsInclusion[0], aideHolisticsInclusion[0]+1),
         {"left": {"style": "SOLID_MEDIUM"}}),
       //add right border to last column item
       createBatchUpdateCellBoldBordersRequest(
-        createRange(sheetID, 3, nRows+3, aideHolisticsGened[1]-1, aideHolisticsGened[1]),
+        createRange(sheetID, 3, nRows+3, aideHolisticsInclusion[1]-1, aideHolisticsInclusion[1]),
         {"right": {"style": "SOLID_MEDIUM"}}),
 
       //aide holistic seperate row 3

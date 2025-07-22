@@ -4,6 +4,22 @@ export interface DLScheduleOutput {
     gradeCount: {[key:string]:number}//metadata, count of number of students in each grade
 }
 
+export const spanList: string[] = [
+    'info',
+    'teacherCoreInclusion',
+    'teacherCoreSep',
+    'teacherRls',
+    'aideCoreInclusion',
+    'aideCoreSeparate',
+    'aideHolisticsInclusion',
+    'aideHolsticsSeparate',
+    'aideAdditional'
+]
+
+export interface spans {
+    [key:string]: [number, number]
+}
+
 export const displayInfo = [
     'Student ID', 
     'Name',
@@ -40,9 +56,11 @@ export const dropColumns = [
     'Access Test LitPL',
     'Access Test ComprehensionPL',
     'Access Com',
-     'Medical Condition'
+    'Medical Condition',
+    'CB Include',
+    'Source'
     ]
-export const teacherCoreGenEd = [
+export const teacherCoreInclusion = [
     'ELA Gen Ed',
     'Math Gen Ed',
     'Science Gen Ed',
@@ -55,9 +73,11 @@ export const teacherCoreSep = [
     'Social Sciences Sep'
 ]
 
-export const teacherCore = teacherCoreGenEd.concat(teacherCoreSep)
+export const teacherCore = teacherCoreInclusion.concat(teacherCoreSep)
 
-export const teacherSpecialsGenEd = [
+export const teacherSpecialsInclusion = [
+    'Independent Function Gen Ed',
+    'Social Emotional Gen Ed',
     'Art Gen Ed', 
     'Computers Gen Ed', 
     'Health Ed Gen Ed', 
@@ -65,10 +85,12 @@ export const teacherSpecialsGenEd = [
     'Music Gen Ed', 
     'Physical Ed Gen Ed', 
     'Vocational Gen Ed',
-    'World Language Gen Ed', 
+    'World Language Gen Ed',
 ]
 
 export const teacherSpecialsSep = [
+    'Independent Function Sep',
+    'Social Emotional Sep', 
     'Art Sep', 
     'Computers Sep', 
     'Health Ed Sep',
@@ -79,7 +101,7 @@ export const teacherSpecialsSep = [
     'World Language Sep'
 ]
 
-export const teacherSpecials = teacherSpecialsGenEd.concat(teacherSpecialsSep)
+export const teacherSpecials = teacherSpecialsInclusion.concat(teacherSpecialsSep)
 
 export const teacherRLS = [
     'Speech Gen Ed',
@@ -105,20 +127,16 @@ export const teacherRLSTotals = [
     'Psych indirect min/wk'
     ]
 
-export const teacherAdditional = [
-    'Independent Function Gen Ed',
-    'Social Emotional Gen Ed', 
+export const teacherAdditional = [ 
     'Other1 Gen Ed',
     'Other2 Gen Ed', 
     'Other3 Gen Ed', 
-    'Independent Function Sep',
-    'Social Emotional Sep', 
     'Other1 Sep', 
     'Other2 Sep', 
     'Other3 Sep'
     ]
 
-export const aideCoreGenEd = [
+export const aideCoreInclusion = [
     'Math Gen Ed Dedicated', 
     'ELA Gen Ed Dedicated', 
     'Science Gen Ed Dedicated',
@@ -152,9 +170,9 @@ export const aideCoreComm = [
     'Social Sciences Comm Shared',
 ]
 
-export const aideCore = aideCoreGenEd.concat(aideCoreSeparate, aideCoreComm)
+export const aideCore = aideCoreInclusion.concat(aideCoreSeparate, aideCoreComm)
 
-export const aideHolisticsGened = [
+export const aideHolisticsInclusion = [
     'Art GE Dedicated', 
     'Computers Gen Ed Dedicated',
     'Physical Ed Gen Ed Dedicated', 
@@ -189,6 +207,7 @@ export const aideHolisticsGened = [
     'Vocational Comm Shared', 
     'World Language Comm Shared'
     ]
+
 export const aideHolisticsSeparate = [
     'Art Separated Dedicated', 
     'Computers Separated Dedicated',
@@ -208,7 +227,7 @@ export const aideHolisticsSeparate = [
     'World Language Separated Shared',
 ]
 
-export const aideHolistics = aideHolisticsGened.concat(aideHolisticsSeparate)
+export const aideHolistics = aideHolisticsInclusion.concat(aideHolisticsSeparate)
 
 export const aideMisc = [
     'Other1 Gen Ed Dedicated', 'Other2 Gen Ed Dedicated',
@@ -217,7 +236,7 @@ export const aideMisc = [
     'Other1 Gen Ed Shared', 'Other2 Gen Ed Shared', 'Other1 Separated Shared',
     'Other2 Separated Shared', 'Other1 Comm Dedicated', 'Other2 Comm Dedicated',
     'Other3 Comm Dedicated', 'Other1 Comm Shared', 'Other2 Comm Shared',
-    'Other3 Comm Shared'
+    'Other3 Comm Shared',
     ]
 export const aideAdditional = [
    'Behavior Aud Dedicated',
@@ -234,7 +253,7 @@ export const aideAdditional = [
    'Daily Living Shared', 'Dressing Shared', 'Feed Self Shared', 'Feed Shared',
    'Food Prep Shared', 'Lift P Shared', 'Mon Doc Shared',
    'Not Independent Shared', 'Not Toilet Shared', 'Walker Shared',
-   'Wheel Chair Shared', 'CB Include'
+   'Wheel Chair Shared'
     ]
 export const aideTotals = [
     'Total Behavior Dedicated',
@@ -242,9 +261,8 @@ export const aideTotals = [
     'Total Instructional Shared', 'Total Personal Care Dedicated',
     'Total Personal Care Shared', 'Total Dedicated', 'Total Shared',
     'Speech indirect min/wk', 'SW indirect min/wk', 'OT indirect min/wk',
-    'PT indirect min/wk', 'Nurse indirect min/wk', 'Psych indirect min/wk',
-    'Source'
+    'PT indirect min/wk', 'Nurse indirect min/wk', 'Psych indirect min/wk'
     ]
 
-export const finalColumns = teacherCore.concat(teacherSpecials, 
+export const finalColumns = teacherCore.concat(teacherSpecials,
     aideCore, aideHolistics, aideAdditional, aideTotals)

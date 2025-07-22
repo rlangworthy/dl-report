@@ -4,11 +4,11 @@ import { DLScheduleOutput } from "./dl-scheduling-constants";
 export function createGoogleSheet(output: DLScheduleOutput) {
     const data = output.data
     const columns = Object.keys(data[0])
-    const TITLE = "DL Scheduling Aid"
+    const TITLE = "Chavez SWD Scheduling Support"
 
     var request = {
       properties: {
-        title: "Chavez DL Scheduling Aid"
+        title: TITLE
       },
       sheets: [
         {

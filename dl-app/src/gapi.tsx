@@ -5,7 +5,6 @@ import Papa from 'papaparse'
 import { 
   getFileType,
   FileTypes,
-  RawStudentParaprofessionalMinutesRow,
   RawStudentSpecialEdInstructionRow 
 } from './file-interfaces';
 
@@ -22,8 +21,8 @@ import {
 } from './create-sheet'
 
 
-function MyDropzone({setAide, setSped}: {
-  setAide: React.Dispatch<React.SetStateAction<null | RawStudentParaprofessionalMinutesRow[]>>,
+function MyDropzone({setSped}: {
+  //setAide: React.Dispatch<React.SetStateAction<null | RawStudentParaprofessionalMinutesRow[]>>,
   setSped: React.Dispatch<React.SetStateAction<null | RawStudentSpecialEdInstructionRow[]>>}) {
   
   const onDrop = useCallback((acceptedFiles: File[]) => {
@@ -34,9 +33,9 @@ function MyDropzone({setAide, setSped}: {
         complete: (results) => {
         const fileType = getFileType(results.meta.fields)
         console.log(fileType)
-        if(fileType == FileTypes.AIDE_MINUTES){
-          setAide(results.data as RawStudentParaprofessionalMinutesRow[])
-        }
+        //if(fileType == FileTypes.AIDE_MINUTES){
+        //  setAide(results.data as RawStudentParaprofessionalMinutesRow[])
+        //}
         if(fileType == FileTypes.TEACHER_MINUTES){
           setSped(results.data as RawStudentSpecialEdInstructionRow[])
         }
@@ -48,7 +47,7 @@ function MyDropzone({setAide, setSped}: {
   const {getRootProps, getInputProps} = useDropzone({onDrop})
 
   return (
-    <div {...getRootProps()}>
+    <div id="dropzone" {...getRootProps()}>
       <input {...getInputProps()} />
       <p>Drag 'n' drop teacher & aide minutes, or click to select files</p>
     </div>
@@ -58,7 +57,7 @@ function MyDropzone({setAide, setSped}: {
 export function GoogleDownload() {
 
   const [sped, setSped] = useState<null | RawStudentSpecialEdInstructionRow[]>(null)
-  const [aide, setAide] = useState<null | RawStudentParaprofessionalMinutesRow[]>(null)
+  //const [aide, setAide] = useState<null | RawStudentParaprofessionalMinutesRow[]>(null)
   const [data, setData] = useState<DLScheduleOutput>({data: [], gradeCount: {}})
 
   useEffect(() => {
@@ -69,13 +68,13 @@ export function GoogleDownload() {
   useEffect(() => {
     const downloadButton = document.getElementById('download_button');
     
-    if(sped && aide){
-      setData(createDLScheduleDoc(sped, aide))
+    if(sped){
+      setData(createDLScheduleDoc(sped))
       if(downloadButton){
         downloadButton.style.display = "block";
       }
     }
-  }, [sped, aide])
+  }, sped)
 
 
    // On load, called to load the auth2 library and API client library.
@@ -91,7 +90,7 @@ export function GoogleDownload() {
         apiKey: import.meta.env.VITE_API_KEY,
         clientId: import.meta.env.VITE_CLIENT_ID,
         discoveryDocs: ["https://sheets.googleapis.com/$discovery/rest?version=v4"],
-        scope: "https://www.googleapis.com/auth/drive.file"
+        scope: "https://www.googleapis.com/auth/drive.file",
       }).then(function () {
 
         // Listen for sign-in state changes.
@@ -110,13 +109,16 @@ export function GoogleDownload() {
       const authorizeButton = document.getElementById('authorize_button');
       const signoutButton = document.getElementById('signout_button');
       const downloadButton = document.getElementById('download_button');
-      if(authorizeButton && signoutButton && downloadButton){
+      const dropzone = document.getElementById('dropzone')
+      if(authorizeButton && signoutButton && downloadButton && dropzone){
           if (isSignedIn) {
             authorizeButton.style.display = "none";
             signoutButton.style.display = "block"
+            dropzone.style.display = "block"
           } else {
             authorizeButton.style.display = "block";
             signoutButton.style.display = "none";
+            dropzone.style.display = "none"
             //downloadButton.style.display = "none";
           }
         }
@@ -154,7 +156,7 @@ export function GoogleDownload() {
           <button id="download_button" onClick={handleDownloadClick} 
           className="block google" style={{display: 'none'}}>Download Data to Google Sheets</button> 
 
-          <MyDropzone setAide={setAide} setSped={setSped}/>
+          <MyDropzone setSped={setSped}/>
 
       </div>
   )

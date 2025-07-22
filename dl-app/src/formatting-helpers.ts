@@ -1,6 +1,6 @@
 import * as Consts from './dl-scheduling-constants'
 
-export const parseGrade = (a: string): Number => {
+export const parseGrade = (a: string): number => {
             if(a === 'K'){
                 return 0
             }
@@ -19,8 +19,8 @@ export const getTeacherCoreSpan = (headers: string[]):number => {
     return getOverlap(Consts.teacherCore, headers)
 }
 
-export const getTeacherCoreGenEdSpan = (headers: string[]):number => {
-    return getOverlap(Consts.teacherCoreGenEd, headers)
+export const getTeacherCoreInclusionSpan = (headers: string[]):number => {
+    return getOverlap(Consts.teacherCoreInclusion, headers)
 }
 
 export const getTeacherCoreSepSpan = (headers: string[]):number => {
@@ -31,8 +31,8 @@ export const getTeacherAdditionalSpan = (headers: string[]):number => {
     return getOverlap(Consts.teacherAdditional, headers) + getOverlap(Consts.teacherRLS, headers)
 }
 
-export const getAideCoreGenEdSpan = (headers: string[]):number => {
-    return getOverlap(Consts.aideCoreGenEd, headers)
+export const getAideCoreInclusionSpan = (headers: string[]):number => {
+    return getOverlap(Consts.aideCoreInclusion, headers)
 }
 
 export const getAideCoreSeparateSpan = (headers: string[]):number => {
@@ -43,8 +43,8 @@ export const getAideAdditionalSpan = (headers: string[]):number => {
     return getOverlap(Consts.aideAdditional, headers)
 }
 
-export const getAideHolisticsGenedSpan = (headers: string[]): number => {
-    return getOverlap(Consts.aideHolisticsGened, headers)
+export const getAideHolisticsInclusionSpan = (headers: string[]): number => {
+    return getOverlap(Consts.aideHolisticsInclusion, headers)
 }
 
 export const getAideHolisticsSeparateSpan = (headers: string[]): number => {

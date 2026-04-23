@@ -60,8 +60,49 @@ export function GoogleDownload() {
   //const [aide, setAide] = useState<null | RawStudentParaprofessionalMinutesRow[]>(null)
   const [data, setData] = useState<DLScheduleOutput>({data: [], gradeCount: {}})
 
+  const [loaded, setLoaded] = useState<boolean>(false)
+
+
+  function loadClientWhenGapiReady(script) {
+    console.log('Trying To Load Client!');
+    console.log(script)
+    if(script.getAttribute('gapi_processed')){
+      console.log('Client is ready! Now you can access gapi. :)');
+      handleClientLoad()
+      /*if(window.location.hostname==='localhost'){
+        gapi.client.load("http://localhost:8080/_ah/api/discovery/v1/apis/metafields/v1/rest")
+        .then((response) => {
+          console.log("Connected to metafields API locally.");
+          },
+          function (err) {
+            console.log("Error connecting to metafields API locally.");
+          }
+        );
+      }*/
+    }
+    else{
+      console.log('Client wasn\'t ready, trying again in 100ms');
+      setTimeout(() => {loadClientWhenGapiReady(script)}, 100);
+    }
+  }
+
+  function initGapi() {
+      console.log('Initializing GAPI...');
+      console.log('Creating the google script tag...');
+
+      const script = document.createElement("script");
+      script.onload = () => {
+        console.log('Loaded script, now loading our api...')
+        // Gapi isn't available immediately so we have to wait until it is to use gapi.
+        loadClientWhenGapiReady(script);
+      };
+      script.src = "https://apis.google.com/js/client.js";
+      
+      document.body.appendChild(script);
+  }
+
   useEffect(() => {
-      handleClientLoad();
+      initGapi()
     }
   );
 
@@ -81,6 +122,7 @@ export function GoogleDownload() {
 
     function handleClientLoad() {
       window.gapi.load('client:auth2', initClient);
+      setLoaded(true)
     }
 
    // Initializes the API client library and sets up sign-in state listeners.
@@ -106,6 +148,17 @@ export function GoogleDownload() {
     // Called when the signed in status changes, to update the UI appropriately. After a sign-in, the API is called.
     
     function updateSigninStatus(isSignedIn: boolean) {
+      if(isSignedIn){
+        const profile = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile()
+        const email = profile.getEmail()
+        gtag('config', 'G-S00SW6TG54', {
+        user_id : email
+        });
+      }else {
+        gtag('config', 'G-S00SW6TG54', {
+        user_id : null
+        })
+      }
       const authorizeButton = document.getElementById('authorize_button');
       const signoutButton = document.getElementById('signout_button');
       const downloadButton = document.getElementById('download_button');
@@ -122,6 +175,7 @@ export function GoogleDownload() {
             //downloadButton.style.display = "none";
           }
         }
+        
       }
 
     // Sign in the user upon button click.
@@ -140,26 +194,44 @@ export function GoogleDownload() {
 
     function handleDownloadClick(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
       event.preventDefault()
+      if(window.gapi.auth2.getAuthInstance().isSignedIn.get()){
+        const profile = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile()
+        const email = profile.getEmail()
+        
+        if(!email.includes('langworthy')){
+          gtag('event', 'swd_generate', {
+            'user_email':email,
+            'event_category':email
+            })
+        }
+      }
       createGoogleSheet(data)
     }
 
 
 
+    return (
+      <>{
+        loaded == false ? (
+          <div>
+            Loading...
+          </div>
+        ): (
+        <div>
 
-  return (
-      <div>
+            <button id="authorize_button"  onClick={handleAuthClick}  className="block googleauth">Authorize Google Login</button>
 
-          <button id="authorize_button"  onClick={handleAuthClick}  className="block googleauth">Authorize Google Login</button>
+            <button id="signout_button"  onClick={handleSignoutClick} className="block googlesignout">Sign Out of Google</button>
 
-          <button id="signout_button"  onClick={handleSignoutClick} className="block googlesignout">Sign Out of Google</button>
+            <button id="download_button" onClick={handleDownloadClick} 
+            className="block google" style={{display: 'none'}}>Download Data to Google Sheets</button> 
 
-          <button id="download_button" onClick={handleDownloadClick} 
-          className="block google" style={{display: 'none'}}>Download Data to Google Sheets</button> 
+            <MyDropzone setSped={setSped}/>
 
-          <MyDropzone setSped={setSped}/>
-
-      </div>
-  )
+        </div>)
+        
+      }</>
+    )
 }
 
 

@@ -75,6 +75,7 @@ export const teacherCoreSep = [
 
 export const teacherCore = teacherCoreInclusion.concat(teacherCoreSep)
 
+
 export const teacherSpecialsInclusion = [
     'Independent Function Gen Ed',
     'Social Emotional Gen Ed',
@@ -135,6 +136,8 @@ export const teacherAdditional = [
     'Other2 Sep', 
     'Other3 Sep'
     ]
+
+    //AIDE CONSTANTS
 
 export const aideCoreInclusion = [
     'Math Gen Ed Dedicated', 

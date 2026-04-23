@@ -465,7 +465,7 @@ export const RawStudentSpecialEdInstructionRowKeys: KeysEnum<RawStudentSpecialEd
 export const getFileType = (fields: string[] | undefined): string => {
   if(fields !== undefined){
       const fieldStrings = fields as string[]
-      if(fieldStrings.length == 216){
+      if(fieldStrings.length > 200){
         return FileTypes.TEACHER_MINUTES
       }
       if(fieldStrings.length == 163){

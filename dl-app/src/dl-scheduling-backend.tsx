@@ -58,9 +58,7 @@ import { parseGrade } from './formatting-helpers'
         //drop students without minutes to schedule and students in cluster programs
         //drop columns with no information
         const [filteredSped, spedKeys] = dropUnusedColumns(
-            sped.filter(row => row.PDIS !== '--' && row.ARS !=='0' && row.ARS !== '##' && 
-                (isNumeric(row.ARS) && parseInt(row.ARS) < 1400)) as {[key: string]:any}[], 'Student ID')
-    
+            sped.filter(row => row.PDIS !== '--' && row.ARS !=='0' && row.ARS !== '##') as {[key: string]:any}[], 'Student ID')
         const finalUsedColumns = finalColumns.filter(value => spedKeys.includes(value))// || aideKeys.includes(value))
         const joinedMinutes:{[key:string]: string}[] = []
         //create joined sped & aide rows, ordered sped keys for student ID's
@@ -70,7 +68,6 @@ import { parseGrade } from './formatting-helpers'
         Object.keys(filteredSped)
         .sort((a,b) => {
             if(filteredSped[a].Grade === filteredSped[b].Grade){
-                console.log(parseInt(filteredSped[a]['ARS']) + '    ' + parseInt(filteredSped[b]['ARS']))
                 return parseInt(filteredSped[a]['ARS']) - parseInt(filteredSped[b]['ARS']) 
             }
             return parseGrade(filteredSped[b].Grade) - parseGrade(filteredSped[a].Grade)

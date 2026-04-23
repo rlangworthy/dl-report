@@ -4,6 +4,8 @@ import { DLScheduleOutput } from "./dl-scheduling-constants";
 export function createGoogleSheet(output: DLScheduleOutput) {
     const data = output.data
     const columns = Object.keys(data[0])
+    console.log("data")
+    console.log(data)
     const TITLE = "Chavez SWD Scheduling Support"
 
     var request = {
@@ -41,8 +43,12 @@ export function createGoogleSheet(output: DLScheduleOutput) {
             }],
             valueInputOption: "USER_ENTERED"
           }
-        }).then(() => {
+        })
+        .then(() => {
           addFormatting(spreadsheet, columns, values.length, output.gradeCount)
+        })
+        .then((formatResponse) => {
+          console.log(formatResponse)
           const url = response.result.spreadsheetUrl
           window.open(url, "_blank")
         })

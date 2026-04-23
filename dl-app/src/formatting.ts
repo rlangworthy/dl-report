@@ -40,6 +40,7 @@ export const addFormatting = (spreadsheet: gapi.client.sheets.Spreadsheet,
 
     
     const cellMerges = getCellMerges(headers, sheetID, nRows)
+    const boldGrades = boldGradeBands(sheetID, gradeCount)
 
     
     const requests: Object[] = [
@@ -102,20 +103,36 @@ export const addFormatting = (spreadsheet: gapi.client.sheets.Spreadsheet,
         }
       },
     ]
+
     //add cell merges to requests
-    Array.prototype.push.apply(requests,cellMerges); 
-    Array.prototype.push.apply(requests,boldGradeBands(sheetID, gradeCount)); 
+    //Array.prototype.push.apply(requests,cellMerges); 
+    //Array.prototype.push.apply(requests,boldGradeBands(sheetID, gradeCount)); 
     console.log('Formatting Requests')
     console.log(requests)
-    var body:gapi.client.sheets.BatchUpdateSpreadsheetRequest = {requests: requests}
-  
     window.gapi.client.sheets.spreadsheets.batchUpdate({
       spreadsheetId: spreadsheetId,
-      resource: body
-    }).then((response) => {
-      console.log(`formatting and conditional formatting updated.`);
-    });
-
+      resource: {requests: requests}
+    })
+      .then((results) => {
+      console.log("results")
+      console.log(results)
+      return window.gapi.client.sheets.spreadsheets.batchUpdate({
+        spreadsheetId: spreadsheetId,
+        resource: {requests: cellMerges}
+        })
+      })
+      .then((results) => {
+      console.log('mergeResults')
+      console.log(results)
+      return window.gapi.client.sheets.spreadsheets.batchUpdate({
+        spreadsheetId: spreadsheetId,
+        resource: {requests: boldGrades}
+        })
+      })
+      .then((results) => {
+        console.log('boldresults')
+        console.log(results)
+      })
   }
 
   const boldGradeBands = (sheetID: number, gradeCount: {[key:string]:number}): Object[]=> {
@@ -154,9 +171,9 @@ export const addFormatting = (spreadsheet: gapi.client.sheets.Spreadsheet,
     aide holistics seperate - FIXME split these later
     aide additional  
     */
-
-    //FIXME add safety checks on spans, break requests into smaller portions
+    //FIXME deterministic spans here so we don't make requests for nothing
 console.log('Spans')
+console.log(headers)
 
     let offset = Helpers.getInfoColumnSpan(headers)+1
     const infoFields = [0, offset]
@@ -168,31 +185,32 @@ console.log(teacherCoreInclusion)
 
     offset += Helpers.getTeacherCoreSepSpan(headers)
     const teacherCoreSep = [teacherCoreInclusion[1], offset > teacherCoreInclusion[1] ? offset : offset + 1]
-console.log(teacherCoreSep)
+console.log("teacherCoreSep"+teacherCoreSep)
+
 
     offset += Helpers.getTeacherAdditionalSpan(headers)
-    const teacherRls = [teacherCoreSep[1], offset > teacherCoreSep[1] ? offset : offset + 1]
-console.log(teacherRls)
+    const teacherAdditional = [teacherCoreSep[1], offset > teacherCoreSep[1] ? offset : offset + 1]
+console.log("teacherAdditional"+teacherAdditional)
 
     offset += Helpers.getAideCoreInclusionSpan(headers)
-    const aideCoreInclusion = [teacherRls[1], offset > teacherRls[1] ? offset : offset + 1]
-console.log(aideCoreInclusion)
+    const aideCoreInclusion = [teacherAdditional[1], offset > teacherAdditional[1] ? offset : offset + 1]
+console.log("aideCoreInclusion" + aideCoreInclusion)
 
     offset += Helpers.getAideCoreSeparateSpan(headers)
     const aideCoreSeparate = [aideCoreInclusion[1], offset > aideCoreInclusion[1] ? offset : offset + 1]
-console.log(aideCoreSeparate)
+console.log("aideCoreSeparate" + aideCoreSeparate)
 
     offset += Helpers.getAideHolisticsInclusionSpan(headers)
     const aideHolisticsInclusion = [aideCoreSeparate[1], offset > aideCoreSeparate[1] ? offset : offset + 1]
-console.log(aideHolisticsInclusion)
+console.log("aideHolisticsInclusion" + aideHolisticsInclusion)
 
     offset += Helpers.getAideHolisticsSeparateSpan(headers)
     const aideHolsticsSeparate = [aideHolisticsInclusion[1], offset > aideHolisticsInclusion[1] ? offset : offset + 1]
-console.log(aideHolsticsSeparate)
+console.log("aideHolsticsSeparate"+aideHolsticsSeparate)
 
     offset += Helpers.getAideAdditionalSpan(headers)
     const aideAdditional = [aideHolsticsSeparate[1], offset > aideHolsticsSeparate[1] ? offset : offset + 1]
-console.log(aideAdditional)
+console.log("aideAdditional" + aideAdditional)
 
     
 

@@ -28,7 +28,7 @@ export const getTeacherCoreSepSpan = (headers: string[]):number => {
 }
 
 export const getTeacherAdditionalSpan = (headers: string[]):number => {
-    return getOverlap(Consts.teacherAdditional, headers) + getOverlap(Consts.teacherRLS, headers)
+    return getOverlap(Consts.teacherSpecials, headers) + getOverlap(Consts.teacherRLS, headers)
 }
 
 export const getAideCoreInclusionSpan = (headers: string[]):number => {
